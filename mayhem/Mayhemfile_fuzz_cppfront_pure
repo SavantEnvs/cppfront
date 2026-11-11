@@ -1,0 +1,10 @@
+project: savantenvs/cppfront
+target: fuzz_cppfront_pure
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/fuzz_cppfront_pure/testsuite
+cmds:
+  - cmd: /mayhem/fuzz_cppfront_pure
+    libfuzzer: true
+    dictionary: /mayhem/mayhem/fuzz_cppfront_pure/fuzz_cppfront_pure.dict
+    timeout: 30

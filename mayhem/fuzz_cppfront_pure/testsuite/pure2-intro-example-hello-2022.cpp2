@@ -1,0 +1,21 @@
+main: () -> int = {
+    vec: std::vector<std::string>
+            = ("hello", "2022");
+
+    for vec do (inout str) {
+        len := decorate(str);
+        print_it(str, len);
+    }
+}
+
+decorate: (inout x) -> int = {
+    x = "[" + x + "]";
+    return x.ssize();
+}
+
+print_it: (x: _, len: _) = {
+    std::cout
+        << ">> " << x
+        << " - length "
+        << len << "\n";
+}

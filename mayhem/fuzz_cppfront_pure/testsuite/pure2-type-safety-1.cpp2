@@ -1,0 +1,69 @@
+
+main: () -> int =
+{
+    v: std::variant<int, int, double> = 42.0;
+    a: std::any = "xyzzy";
+    o: std::optional<int> = ();
+
+    test_generic(3.14, "double");
+    test_generic(v,    "variant<int, int, double>");
+    test_generic(a,    "any");
+    test_generic(o,    "optional<int>");
+
+    std::cout << "\n";
+
+    _ = v.emplace<1>(1);
+    a = 2;
+    o = 3;
+    test_generic(42,   "int");
+    test_generic(v,    "variant<int, int, double>");
+    test_generic(a,    "any");
+    test_generic(o,    "optional<int>");
+
+    oi: std::optional<int> = 5;
+    std::cout << "optional<int> is: ";
+    test_1365(oi);
+    od: std::optional<*D> = nullptr;
+    std::cout << "\noptional<*D> is: ";
+    test_1365(od);
+    std::cout << "\n";
+}
+
+test_generic: ( x, msg ) = {
+    msgx: std::string = msg;
+    // Full qualification is necessary to avoid ambiguity in C++23
+    // C++23 defines std::print, which would be picked up here by ADL
+    ::print( msgx + " is int? ", x is int );
+}
+
+B: type = { }
+D: type = { this: B; }
+
+test_1365: (o) = {
+    if o is int {
+        std::cout << "int ";
+    }
+    if o is bool {
+        std::cout << "bool ";
+    }
+    if o is float {
+        std::cout << "float ";
+    }
+    if o is *B {
+        std::cout << "*B ";
+    }
+    if o is *D {
+        std::cout << "*D ";
+    }
+    if o is std::string {
+        std::cout << "std::string ";
+    }
+}
+
+print: ( msg: std::string, b: bool ) = {
+    bmsg: * const char;
+    if b { bmsg = "true";  }
+    else { bmsg = "false"; }
+    std::cout << std::setw(40) << msg << bmsg << "\n";
+}
+
